@@ -1,1 +1,172 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>Horloge Notion</title>
+
+<style>
+:root {
+    color-scheme: light dark;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    background: transparent;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
+
+    color: #37352f;
+}
+
+.widget {
+    text-align: center;
+    padding: 20px 30px;
+}
+
+.time {
+    font-size: clamp(45px, 11vw, 75px);
+    font-weight: 650;
+    letter-spacing: -3px;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.greeting {
+    margin-top: 12px;
+    font-size: clamp(15px, 3.5vw, 19px);
+    font-weight: 500;
+    opacity: 0.8;
+}
+
+.day {
+    margin-top: 5px;
+    font-size: clamp(14px, 3.2vw, 17px);
+    font-weight: 500;
+}
+
+.date {
+    margin-top: 3px;
+    font-size: clamp(12px, 2.8vw, 15px);
+    opacity: 0.5;
+}
+
+@media (prefers-color-scheme: dark) {
+    body {
+        color: #f1f1ef;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="widget">
+
+    <div class="time" id="time">00:00</div>
+
+    <div class="greeting" id="greeting">
+        Bonjour 👋
+    </div>
+
+    <div class="day" id="day">
+        Vendredi
+    </div>
+
+    <div class="date" id="date">
+        4 septembre 2026
+    </div>
+
+</div>
+
+<script>
+
+function updateClock() {
+
+    const now = new Date();
+
+    const hours =
+        String(now.getHours()).padStart(2, "0");
+
+    const minutes =
+        String(now.getMinutes()).padStart(2, "0");
+
+    document.getElementById("time").textContent =
+        `${hours}:${minutes}`;
+
+    const hour = now.getHours();
+
+    let greeting;
+
+    if (hour >= 5 && hour < 12) {
+        greeting = "Bonjour ☀️";
+    } 
+    else if (hour >= 12 && hour < 18) {
+        greeting = "Bon après-midi 🌤️";
+    } 
+    else if (hour >= 18 && hour < 23) {
+        greeting = "Bonsoir 🌙";
+    } 
+    else {
+        greeting = "Bonne nuit 🌙";
+    }
+
+    document.getElementById("greeting").textContent =
+        greeting;
+
+    let day =
+        new Intl.DateTimeFormat(
+            "fr-FR",
+            { weekday: "long" }
+        ).format(now);
+
+    day =
+        day.charAt(0).toUpperCase() + day.slice(1);
+
+    document.getElementById("day").textContent =
+        day;
+
+    const date =
+        new Intl.DateTimeFormat(
+            "fr-FR",
+            {
+                day: "numeric",
+                month: "long",
+                year: "numeric"
+            }
+        ).format(now);
+
+    document.getElementById("date").textContent =
+        date;
+}
+
+updateClock();
+
+setInterval(updateClock, 1000);
+
+</script>
+
+</body>
+</html>
